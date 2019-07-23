@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 
 import Header from './Header/Header.jsx';
 import SearchForm from './SearchForm/SearchForm.jsx';
@@ -6,6 +11,7 @@ import SearchForm from './SearchForm/SearchForm.jsx';
 import BeerList from './BeerList/BeerList.jsx';
 // import logo from './logo.svg';
 import './App.css';
+import Favorites from './Favorites/Favorites.jsx';
 
 class App extends Component {
   state ={
@@ -17,15 +23,21 @@ class App extends Component {
   render() {
     const {searched} = this.state;
 
-    return <div className="app">
-           <Header/>
-           <SearchForm onChangeHandler={this.searchChanged}/>
-           <BeerList searched={searched}/>
-           </div>;
-           // <BeerCard
-           //    image='https://images.punkapi.com/v2/keg.png'
-           //    title='Buzz'
-           //    description='A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.'/>
+    return <Router>
+             <div className="app">
+             <Header/>
+
+             <Switch>
+                 <Route exact path='/' render={() => [
+                   <SearchForm key = 'SearchForm' onChangeHandler={this.searchChanged}/>,
+                   <BeerList key = 'BeerList' searched={searched}/>
+                 ]}/>
+
+                 <Route path='/favorites' component={Favorites}/>
+             </Switch>
+
+             </div>
+           </Router>
   }
 }
 
